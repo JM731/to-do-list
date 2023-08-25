@@ -1,0 +1,50 @@
+{% macro form_type_text(form, text_sign_up, text_sign_in) %}
+{% if form.form_name == "sign_up_form" %}
+{{ text_sign_up }}
+{% else %}
+{{ text_sign_in }}
+{% endif %}
+{% endmacro %}
+
+{% macro flash_message(desired_category) %}
+{% for category, message in get_flashed_messages(with_categories=true) %}
+    {% if category == desired_category %}
+        <div style="padding: 0.35rem 0.5rem; border-radius: 0.25rem;" class="alert alert-warning" role="alert">{{ message }}</div>
+    {% endif %}
+{% endfor %}
+{% endmacro %}
+
+{% macro retrieve_url(form_name) %}
+{% if form_name == 'sign_up_form' %}
+    {{ url_for('sign_up') }}
+{% else %}
+    {{ url_for('login')}}
+{% endif %}
+{% endmacro %}
+
+{% macro render_field_errors(field) %}
+{% for err in field.errors %}
+    <div style="padding: 0.35rem 0.5rem; border-radius: 0.25rem;" class="alert alert-warning" role="alert">{{ err }}</div>
+{% endfor %}
+{% endmacro %}
+
+{% macro render_task_text(task, attribute, date) %}
+    {% if attribute == "date" %}
+        {% set text = task[attribute].strftime('%Y-%m-%d %H:%M') %}
+    {% else %}
+        {% set text = task[attribute] %}
+    {% endif %}
+    {% if task.date > date %}
+        {% if task.is_done %}
+            <p class="mb-0 text-primary text-decoration-line-through">{{ text }}</p>
+        {% else %}
+            <p class="mb-0 text-primary">{{ text }}</p>
+        {% endif %}
+    {% else %}
+        {% if task.is_done %}
+            <p class="mb-0 text-danger-emphasis text-decoration-line-through">{{ text }}</p>
+        {% else %}
+            <p class="mb-0 text-danger-emphasis">{{ text }}</p>
+        {% endif %}
+    {% endif %}
+{% endmacro %}

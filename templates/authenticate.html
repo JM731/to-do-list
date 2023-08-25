@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as macros %}
+{% block title %} To Do List - Authenticate {% endblock %}
+{% block bodyclass %} class="d-flex align-items-center my-5 py-4" {% endblock %}
+{% block content %}
+<main style="width: 300px" class="m-auto">
+    <h1 class="text-center mb-5"> To Do List </h1>
+    <form method="POST" action="{{ macros.retrieve_url(form.form_name) }}" novalidate>
+        {{ form.csrf_token() }}
+        <h3 class="my-3 fw-normal text-center">
+            {{ macros.form_type_text(form, "Please sign up", "Log in") }}
+        </h3>
+        <div class="form-floating mb-1">
+            {{ form.username(class_="form-control") }}
+            {{ form.username.label }}
+        </div>
+        {{ macros.flash_message("username_in_use") }}
+        {{ macros.flash_message("invalid_username") }}
+        {{ macros.render_field_errors(form.username) }}
+        <div class="form-floating mb-1">
+            {{ form.password(class_="form-control") }}
+            {{ form.password.label }}
+        </div>
+        {{ macros.flash_message("wrong_password") }}
+        {{ macros.render_field_errors(form.password) }}
+        {% if form.form_name == "sign_up_form" %}
+        <div class="mb-2">
+            <div class="form-floating mb-1">
+                {{ form.password2(class_="form-control") }}
+                {{ form.password2.label }}
+            </div>
+            {{ macros.render_field_errors(form.password2) }}
+            {{ macros.flash_message("passwords_match") }}
+        </div>
+        {% endif %}
+        {{ form.submit(class_="btn btn-primary w-100 py-2 mb-3") }}
+        <p class="text-start">
+            {{ macros.form_type_text(form, "Already have an account?", "Don't have an account?") }}
+            <a href="{% if form.form_name == 'sign_up_form' %}
+                        {{ url_for('login') }}
+                     {% else %}
+                        {{ url_for('sign_up')}}
+                     {% endif %}">
+                {{ macros.form_type_text(form, "Log in", "Register") }}
+            </a>
+        </p>
+    </form>
+</main>
+{% endblock %}
