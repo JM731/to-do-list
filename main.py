@@ -61,7 +61,7 @@ def sign_up():
         elif form.password.data == form.password2.data:
             new_user = User(
                 username=form.username.data,
-                password=generate_password_hash(form.password.data, method='pbkdf2', salt_length=8),
+                password=generate_password_hash(form.password.data, method='pbkdf2:sha256', salt_length=8),
                 timezone="Europe/London"
             )
             db.session.add(new_user)
