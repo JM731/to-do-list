@@ -115,7 +115,7 @@ def to_do_list():
     user_timezone = pytz.timezone(current_user.timezone)
     user_now = utc_now.astimezone(user_timezone)
     user_now = user_now.replace(tzinfo=None)
-    current_user_tasks = db.session.query(ToDoList).filter_by(user_id=current_user.id).all()
+    current_user_tasks = db.session.query(ToDoList).filter_by(user_id=current_user.id).order_by(ToDoList.date.asc()).all()
     return render_template("to_do_list.html",
                            tasks=current_user_tasks,
                            now=user_now,
